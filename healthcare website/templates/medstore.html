@@ -1,0 +1,380 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    
+    <title>Medicines for Diseases</title>
+    <style>
+        /* Basic styles for page and medicine grid */
+        body {
+            font-family: 'Arial', sans-serif;
+            background-color: #f4f7fc;
+            margin: 0;
+            padding: 0;
+        }
+
+        .navbar {
+            background-color: #007bff;
+            padding: 10px 20px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            color: white;
+        }
+
+        .navbar .nav-links {
+            display: flex;
+            gap: 15px;
+        }
+
+        .navbar .nav-links button {
+            padding: 8px 20px;
+            background-color: #ff5722;
+            color: white;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+        }
+
+        .navbar .nav-links button:hover {
+            background-color: #e64a19;
+        }
+
+        .container {
+            width: 90%;
+            margin: 20px auto;
+            padding: 20px;
+        }
+
+        .heading {
+            text-align: center;
+            font-size: 2.5em;
+            margin-bottom: 30px;
+        }
+
+        .medicines-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
+            gap: 20px;
+        }
+
+        .medicine-card {
+            background-color: #fff;
+            padding: 15px;
+            border-radius: 10px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+            text-align: center;
+            transition: box-shadow 0.3s ease;
+        }
+
+        .medicine-card:hover {
+            box-shadow: 0 8px 16px rgba(0, 0, 0, 0.2);
+        }
+
+        .medicine-card img {
+            width: 100%;
+            height: auto;
+            border-radius: 8px;
+            margin-bottom: 15px;
+        }
+
+        .medicine-card h3 {
+            font-size: 1.3em;
+            margin: 15px 0 10px 0;
+            color: #333;
+        }
+
+        .medicine-card p {
+            font-size: 1em;
+            color: #666;
+            margin-bottom: 15px;
+        }
+
+        .medicine-card .price {
+            font-size: 1.2em;
+            font-weight: bold;
+            color: #007bff;
+            margin-bottom: 15px;
+        }
+
+        .wishlist-btn, .order-btn {
+            padding: 10px 20px;
+            background-color: #ff5722;
+            color: white;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            font-size: 1em;
+            margin-top: 10px;
+        }
+
+        .wishlist-btn.added {
+            background-color: #4caf50;
+        }
+
+        .wishlist-btn.added:hover {
+            background-color: #388e3c;
+        }
+
+        .order-btn {
+    display: inline-block;
+    padding: 10px;
+    background-color: #28a745;
+    color: white;
+    border: none;
+    text-align: center;
+    text-decoration: none;
+    margin-top: 10px;
+    border-radius: 5px;
+}
+
+.order-btn:hover {
+    background-color: #218838;
+}
+
+
+        
+    </style>
+</head>
+<body>
+
+    <!-- Navigation Bar -->
+    <div class="navbar">
+        <div class="navbar-title">
+            <h2>Online Pharmacy</h2>
+        </div>
+        <div class="nav-links">
+            <a href="/wishlist"><button>Wishlist</button></a>
+            <a href="/order"><button>Order Now</button></a>
+            <a href="/"><button>Home</button></a>
+        </div>
+    </div>
+    <div class="container">
+        <div class="heading">Medicines to purchase</div>
+    
+        <div class="medicines-grid">
+            <!-- Medicine 1 -->
+            <div class="medicine-card">
+                <img src="../static/cough.jpg" alt="Cough Medicine">
+                <h3>Cough Medicine</h3>
+                <p>Effective in treating persistent coughs and easing throat irritation.</p>
+                <div class="price">$12.99</div>
+                <button class="wishlist-btn" onclick="addToWishlist('Cough Medicine')">Add to Wishlist</button>
+                <a href="/order?medicine=Cough%20Medicine&description=Effective%20in%20treating%20persistent%20coughs%20and%20easing%20throat%20irritation.&price=12.99" class="order-btn">Order Now</a>
+            </div>
+        
+            <!-- Medicine 2 -->
+            <div class="medicine-card">
+                <img src="../static/fever.avif" alt="Fever Medicine">
+                <h3>Fever Medicine</h3>
+                <p>Helps lower fever and alleviate discomfort caused by viral infections.</p>
+                <div class="price">$9.99</div>
+                <button class="wishlist-btn" onclick="addToWishlist('Fever Medicine')">Add to Wishlist</button>
+                <a href="/order?medicine=Fever%20Medicine&description=Helps%20lower%20fever%20and%20alleviate%20discomfort%20caused%20by%20viral%20infections.&price=9.99" class="order-btn">Order Now</a>
+            </div>
+        
+            <!-- Medicine 3 -->
+            <div class="medicine-card">
+                <img src="../static/pain reliver.jpg" alt="Pain Reliever">
+                <h3>Pain Reliever</h3>
+                <p>Fast-acting pain reliever for headaches, back pain, and muscle aches.</p>
+                <div class="price">$8.99</div>
+                <button class="wishlist-btn" onclick="addToWishlist('Pain Reliever')">Add to Wishlist</button>
+                <a href="/order?medicine=Pain%20Reliever&description=Fast-acting%20pain%20reliever%20for%20headaches%2C%20back%20pain%2C%20and%20muscle%20aches.&price=8.99" class="order-btn">Order Now</a>
+            </div>
+        
+            <!-- Medicine 4 -->
+            <div class="medicine-card">
+                <img src="../static/cold.jpg" alt="Cold Medicine">
+                <h3>Cold Medicine</h3>
+                <p>Relieves symptoms of cold and flu, including congestion and sneezing.</p>
+                <div class="price">$15.99</div>
+                <button class="wishlist-btn" onclick="addToWishlist('Cold Medicine')">Add to Wishlist</button>
+                <a href="/order?medicine=Cold%20Medicine&description=Relieves%20symptoms%20of%20cold%20and%20flu%2C%20including%20congestion%20and%20sneezing.&price=15.99" class="order-btn">Order Now</a>
+            </div>
+        
+            <!-- Medicine 5 -->
+            <div class="medicine-card">
+                <img src="../static/allergy.jpg" alt="Allergy Medicine">
+                <h3>Allergy Medicine</h3>
+                <p>Helps manage symptoms of allergies like sneezing, itching, and watery eyes.</p>
+                <div class="price">$11.49</div>
+                <button class="wishlist-btn" onclick="addToWishlist('Allergy Medicine')">Add to Wishlist</button>
+                <a href="/order?medicine=Allergy%20Medicine&description=Helps%20manage%20symptoms%20of%20allergies%20like%20sneezing%2C%20itching%2C%20and%20watery%20eyes.&price=11.49" class="order-btn">Order Now</a>
+            </div>
+        
+            <!-- Medicine 6 -->
+            <div class="medicine-card">
+                <img src="../static/antacid.jpg" alt="Antacid">
+                <h3>Antacid</h3>
+                <p>Relieves heartburn and indigestion by neutralizing stomach acid.</p>
+                <div class="price">$5.99</div>
+                <button class="wishlist-btn" onclick="addToWishlist('Antacid')">Add to Wishlist</button>
+                <a href="/order?medicine=Antacid&description=Relieves%20heartburn%20and%20indigestion%20by%20neutralizing%20stomach%20acid.&price=5.99" class="order-btn">Order Now</a>
+            </div>
+        
+            <!-- Medicine 7 -->
+            <div class="medicine-card">
+                <img src="../static/vitaminc.jpg" alt="Vitamin C">
+                <h3>Vitamin C</h3>
+                <p>Boosts immunity and supports overall health.</p>
+                <div class="price">$7.99</div>
+                <button class="wishlist-btn" onclick="addToWishlist('Vitamin C')">Add to Wishlist</button>
+                <a href="/order?medicine=Vitamin%20C&description=Boosts%20immunity%20and%20supports%20overall%20health.&price=7.99" class="order-btn">Order Now</a>
+            </div>
+        
+            <!-- Medicine 8 -->
+            <div class="medicine-card">
+                <img src="../static/sleep aid.jpg" alt="Sleep Aid">
+                <h3>Sleep Aid</h3>
+                <p>Helps promote restful sleep and reduce insomnia.</p>
+                <div class="price">$10.99</div>
+                <button class="wishlist-btn" onclick="addToWishlist('Sleep Aid')">Add to Wishlist</button>
+                <a href="/order?medicine=Sleep%20Aid&description=Helps%20promote%20restful%20sleep%20and%20reduce%20insomnia.&price=10.99" class="order-btn">Order Now</a>
+            </div>
+        
+            <!-- Medicine 9 -->
+            <div class="medicine-card">
+                <img src="../static/skin cream.jpg" alt="Skin Cream">
+                <h3>Skin Cream</h3>
+                <p>Relieves skin irritation and moisturizes dry skin.</p>
+                <div class="price">$6.49</div>
+                <button class="wishlist-btn" onclick="addToWishlist('Skin Cream')">Add to Wishlist</button>
+                <a href="/order?medicine=Skin%20Cream&description=Relieves%20skin%20irritation%20and%20moisturizes%20dry%20skin.&price=6.49" class="order-btn">Order Now</a>
+            </div>
+        
+            <!-- Medicine 10 -->
+            <div class="medicine-card">
+                <img src="../static/antibio.jpg" alt="Antibiotic">
+                <h3>Antibiotic</h3>
+                <p>Treats bacterial infections and supports the immune system.</p>
+                <div class="price">$14.99</div>
+                <button class="wishlist-btn" onclick="addToWishlist('Antibiotic')">Add to Wishlist</button>
+                <a href="/order?medicine=Antibiotic&description=Treats%20bacterial%20infections%20and%20supports%20the%20immune%20system.&price=14.99" class="order-btn">Order Now</a>
+            </div>
+        
+            <!-- Medicine 11 -->
+            <div class="medicine-card">
+                <img src="../static/digestive.jpg" alt="Digestive Aid">
+                <h3>Digestive Aid</h3>
+                <p>Supports digestion and helps alleviate bloating and discomfort.</p>
+                <div class="price">$8.49</div>
+                <button class="wishlist-btn" onclick="addToWishlist('Digestive Aid')">Add to Wishlist</button>
+                <a href="/order?medicine=Digestive%20Aid&description=Supports%20digestion%20and%20helps%20alleviate%20bloating%20and%20discomfort.&price=8.49" class="order-btn">Order Now</a>
+            </div>
+        
+            <!-- Medicine 12 -->
+            <div class="medicine-card">
+                <img src="../static/cough syrup.avif" alt="Cough Syrup">
+                <h3>Cough Syrup</h3>
+                <p>Relieves cough and throat irritation caused by colds or flu.</p>
+                <div class="price">$13.49</div>
+                <button class="wishlist-btn" onclick="addToWishlist('Cough Syrup')">Add to Wishlist</button>
+                <a href="/order?medicine=Cough%20Syrup&description=Relieves%20cough%20and%20throat%20irritation%20caused%20by%20colds%20or%20flu.&price=13.49" class="order-btn">Order Now</a>
+            </div>
+        
+            <!-- Medicine 13 -->
+            <div class="medicine-card">
+                <img src="../static/antiviral.avif" alt="Antiviral">
+                <h3>Antiviral</h3>
+                <p>Fights viral infections and helps reduce symptoms of illness.</p>
+                <div class="price">$17.99</div>
+                <button class="wishlist-btn" onclick="addToWishlist('Antiviral')">Add to Wishlist</button>
+                <a href="/order?medicine=Antiviral&description=Fights%20viral%20infections%20and%20helps%20reduce%20symptoms%20of%20illness.&price=17.99" class="order-btn">Order Now</a>
+            </div>
+        
+            <!-- Medicine 14 -->
+            <div class="medicine-card">
+                <img src="../static/muscle relaxer.avif" alt="Muscle Relaxer">
+                <h3>Muscle Relaxer</h3>
+                <p>Relieves muscle spasms and promotes relaxation.</p>
+                <div class="price">$18.99</div>
+                <button class="wishlist-btn" onclick="addToWishlist('Muscle Relaxer')">Add to Wishlist</button>
+                <a href="/order?medicine=Muscle%20Relaxer&description=Relieves%20muscle%20spasms%20and%20promotes%20relaxation.&price=18.99" class="order-btn">Order Now</a>
+            </div>
+        
+            <!-- Medicine 15 -->
+            <div class="medicine-card">
+                <img src="../static/anti inflamatory.avif" alt="Anti-inflammatory">
+                <h3>Anti-inflammatory</h3>
+                <p>Reduces inflammation and provides relief from pain and swelling.</p>
+                <div class="price">$9.49</div>
+                <button class="wishlist-btn" onclick="addToWishlist('Anti-inflammatory')">Add to Wishlist</button>
+                <a href="/order?medicine=Anti-inflammatory&description=Reduces%20inflammation%20and%20provides%20relief%20from%20pain%20and%20swelling.&price=9.49" class="order-btn">Order Now</a>
+            </div>
+        
+            <!-- Medicine 16 -->
+            <div class="medicine-card">
+                <img src="../static/stomach.avif" alt="Stomach Relief">
+                <h3>Stomach Relief</h3>
+                <p>Soothes stomach pain and helps alleviate nausea and upset stomach.</p>
+                <div class="price">$6.99</div>
+                <button class="wishlist-btn" onclick="addToWishlist('Stomach Relief')">Add to Wishlist</button>
+                <a href="/order?medicine=Stomach%20Relief&description=Soothes%20stomach%20pain%20and%20helps%20alleviate%20nausea%20and%20upset%20stomach.&price=6.99" class="order-btn">Order Now</a>
+            </div>
+        
+            <!-- Medicine 17 -->
+            <div class="medicine-card">
+                <img src="../static/ear drop.jpg" alt="Ear Drops">
+                <h3>Ear Drops</h3>
+                <p>Relieves ear pain and helps clear earwax buildup.</p>
+                <div class="price">$5.49</div>
+                <button class="wishlist-btn" onclick="addToWishlist('Ear Drops')">Add to Wishlist</button>
+                <a href="/order?medicine=Ear%20Drops&description=Relieves%20ear%20pain%20and%20helps%20clear%20earwax%20buildup.&price=5.49" class="order-btn">Order Now</a>
+            </div>
+        
+            <!-- Medicine 18 -->
+            <div class="medicine-card">
+                <img src="../static/headache.avif" alt="Headache Relief">
+                <h3>Headache Relief</h3>
+                <p>Fast-acting relief for tension headaches and migraines.</p>
+                <div class="price">$7.99</div>
+                <button class="wishlist-btn" onclick="addToWishlist('Headache Relief')">Add to Wishlist</button>
+                <a href="/order?medicine=Headache%20Relief&description=Fast-acting%20relief%20for%20tension%20headaches%20and%20migraines.&price=7.99" class="order-btn">Order Now</a>
+            </div>
+        
+            <!-- Medicine 19 -->
+            <div class="medicine-card">
+                <img src="../static/anti histamine.avif" alt="Antihistamine">
+                <h3>Antihistamine</h3>
+                <p>Relieves allergy symptoms like sneezing and runny nose.</p>
+                <div class="price">$10.49</div>
+                <button class="wishlist-btn" onclick="addToWishlist('Antihistamine')">Add to Wishlist</button>
+                <a href="/order?medicine=Antihistamine&description=Relieves%20allergy%20symptoms%20like%20sneezing%20and%20runny%20nose.&price=10.49" class="order-btn">Order Now</a>
+            </div>
+        
+            <!-- Medicine 20 -->
+            <div class="medicine-card">
+                <img src="../static/throat.avif" alt="Throat Lozenges">
+                <h3>Throat Lozenges</h3>
+                <p>Relieves sore throat and provides temporary relief from coughs.</p>
+                <div class="price">$4.99</div>
+                <button class="wishlist-btn" onclick="addToWishlist('Throat Lozenges')">Add to Wishlist</button>
+                <a href="/order?medicine=Throat%20Lozenges&description=Relieves%20sore%20throat%20and%20provides%20temporary%20relief%20from%20coughs.&price=4.99" class="order-btn">Order Now</a>
+            </div>
+        </div>
+        
+    </div>
+    
+
+    <script>
+        function addToWishlist(medicine) {
+            // Get the current wishlist from localStorage or initialize an empty array
+            let wishlist = JSON.parse(localStorage.getItem('wishlist')) || [];
+
+            // Add the selected medicine to the wishlist if it's not already there
+            if (!wishlist.includes(medicine)) {
+                wishlist.push(medicine);
+                localStorage.setItem('wishlist', JSON.stringify(wishlist));
+            }
+
+            // Change button state to "Added"
+            const button = event.target;
+            button.innerText = "Added to Wishlist";
+            button.classList.add('added');
+        }
+    </script>
+
+</body>
+</html>

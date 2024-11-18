@@ -1,0 +1,23 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Reschedule Appointment</title>
+</head>
+<body>
+    <nav>
+        <a class="btn btn-primary" href="/">Home</a>
+    </nav>
+    <h1>Reschedule Appointment</h1>
+    <form method="POST">
+        <label for="appointment_id">Appointment ID:</label><br>
+        <input type="number" id="appointment_id" name="appointment_id" required><br><br>
+        
+        <label for="new_date">New Appointment Date and Time:</label><br>
+        <input type="datetime-local" id="new_date" name="new_date" required><br><br>
+        
+        <button type="submit">Submit</button>
+    </form>
+</body>
+</html>

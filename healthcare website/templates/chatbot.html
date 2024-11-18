@@ -1,0 +1,228 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Chatbot</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f4f7fc;
+            margin: 0;
+            padding: 0;
+        }
+
+        .chat-container {
+            width: 100%;
+            max-width: 600px;
+            margin: 50px auto;
+            background-color: #fff;
+            border-radius: 10px;
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+            padding: 20px;
+            display: flex;
+            flex-direction: column;
+            height: 500px;
+            overflow: hidden;
+        }
+
+        .chat-box {
+            flex-grow: 1;
+            overflow-y: auto;
+            padding-right: 10px;
+            margin-bottom: 20px;
+        }
+
+        .message {
+            display: flex;
+            margin: 10px 0;
+            padding: 10px;
+            border-radius: 8px;
+            max-width: 80%;
+        }
+
+        .user-message {
+            background-color: #d0eaff;
+            align-self: flex-start;
+            border-radius: 12px 12px 0 12px;
+        }
+
+        .bot-message {
+            background-color: #e8f5e9;
+            align-self: flex-end;
+            border-radius: 12px 12px 12px 0;
+        }
+
+        .input-container {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .input-container input {
+            width: 80%;
+            padding: 10px;
+            font-size: 14px;
+            border: 2px solid #ccc;
+            border-radius: 5px;
+            outline: none;
+        }
+
+        .input-container button {
+            padding: 10px 20px;
+            background-color: #007bff;
+            color: #fff;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            font-size: 14px;
+        }
+
+        .input-container button:hover {
+            background-color: #0056b3;
+        }
+
+        .loading {
+            text-align: center;
+            color: #007bff;
+            font-weight: bold;
+        }
+
+        .message-text {
+            font-size: 14px;
+            line-height: 1.5;
+            word-wrap: break-word;
+        }
+
+        /* Style for formatting within the bot's response */
+        .message-text b {
+            font-weight: bold;
+            color: #007bff;  /* Blue color for bold text */
+        }
+
+        .message-text i {
+            font-style: italic;
+            color: #666;  /* Gray color for italic text */
+        }
+
+        .message-text u {
+            text-decoration: underline;
+            color: #ff5722;  /* Orange color for underlined text */
+        }
+
+        .message-text code {
+            background-color: #f4f7fc;
+            padding: 2px 5px;
+            border-radius: 3px;
+            font-family: monospace;
+            color: #e91e63;  /* Pink color for code snippets */
+        }
+
+    </style>
+
+</head>
+<body>
+    <nav>
+        <a class="btn btn-primary" href="/">Home</a>
+    </nav>
+
+<div class="chat-container">
+    <div class="chat-box" id="chat-box">
+        <!-- Messages will be displayed here -->
+    </div>
+
+    <div class="input-container">
+        <input type="text" id="user-input" placeholder="Type your message..." onkeydown="checkEnter(event)">
+        <button id="send-button" onclick="sendMessage()">Send</button>
+    </div>
+</div>
+
+<script>
+    // Function to add user message
+    function addUserMessage(message) {
+        const chatBox = document.getElementById('chat-box');
+        const messageDiv = document.createElement('div');
+        messageDiv.classList.add('message', 'user-message');
+        messageDiv.innerHTML = `<div class="message-text">${message}</div>`;
+        chatBox.appendChild(messageDiv);
+        chatBox.scrollTop = chatBox.scrollHeight;
+    }
+
+    // Function to add bot message
+    function addBotMessage(message) {
+        const chatBox = document.getElementById('chat-box');
+        const messageDiv = document.createElement('div');
+        messageDiv.classList.add('message', 'bot-message');
+        messageDiv.innerHTML = `<div class="message-text">${message}</div>`;
+        chatBox.appendChild(messageDiv);
+        chatBox.scrollTop = chatBox.scrollHeight;
+        return messageDiv;  // Return the messageDiv element to later remove "Typing..." message
+    }
+
+    // Function to send message when clicking 'Send'
+    function sendMessage() {
+        const userInput = document.getElementById('user-input');
+        const message = userInput.value.trim();
+        if (message) {
+            addUserMessage(message);  // Display user message
+            userInput.value = '';  // Clear input field
+            const typingMessageDiv = addBotMessage('Typing...');  // Display bot "typing" message
+            fetchBotResponse(message, typingMessageDiv);  // Call backend API to get response
+        }
+    }
+
+    // Function to fetch response from the Flask backend
+    function fetchBotResponse(userMessage, typingMessageDiv) {
+        // Send POST request to the '/generate-response' route with user message
+        fetch('/generate-response', {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json'
+            },
+            body: JSON.stringify({ user_input: userMessage })  // Send user input in JSON format
+        })
+        .then(response => response.json())  // Parse the JSON response
+        .then(data => {
+            const botMessage = data.response;  // Extract the response from the JSON
+            // Remove the "Typing..." message
+            typingMessageDiv.remove();
+            // Format the message to render bold, italic, or code
+            const formattedMessage = formatMessage(botMessage);
+            // Add the bot's actual response with formatted text
+            addBotMessage(formattedMessage);
+        })
+        .catch(error => {
+            console.error('Error:', error);
+            // Remove typing message and display error message if an error occurs
+            typingMessageDiv.remove();
+            addBotMessage('Sorry, something went wrong. Please try again.');
+        });
+    }
+
+    // Function to format the bot message to handle bold, italic, etc.
+    function formatMessage(message) {
+        // Bold: Replace **text** with <b>text</b>
+        message = message.replace(/\*\*(.*?)\*\*/g, '<b>$1</b>');
+        // Italic: Replace *text* with <i>text</i>
+        message = message.replace(/\*(.*?)\*/g, '<i>$1</i>');
+        // Underline: Replace __text__ with <u>text</u>
+        message = message.replace(/__(.*?)__/g, '<u>$1</u>');
+        // Code: Replace `code` with <code>code</code>
+        message = message.replace(/`(.*?)`/g, '<code>$1</code>');
+        
+        // Handling line breaks (newlines in markdown)
+        message = message.replace(/\n/g, '<br>');  // Replace newline characters with <br> tags to create line breaks
+
+        return message;
+    }
+
+    // Check for Enter key press to trigger send
+    function checkEnter(event) {
+        if (event.key === 'Enter') {
+            sendMessage();
+        }
+    }
+</script>
+
+</body>
+</html>

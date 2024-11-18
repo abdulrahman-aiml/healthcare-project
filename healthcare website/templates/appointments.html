@@ -1,0 +1,69 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>All Appointments</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 20px;
+        }
+        .notification {
+            background-color: #d4edda;
+            color: #155724;
+            border: 1px solid #c3e6cb;
+            padding: 10px;
+            border-radius: 5px;
+            margin-bottom: 20px;
+        }
+        table {
+            width: 100%;
+            border-collapse: collapse;
+        }
+        table, th, td {
+            border: 1px solid #ddd;
+        }
+        th, td {
+            padding: 10px;
+            text-align: left;
+        }
+        th {
+            background-color: #f4f4f4;
+        }
+    </style>
+</head>
+<body>
+    <nav>
+        <a class="btn btn-primary" href="/">Home</a>
+    </nav>
+    <!-- Notification Message -->
+    {% if message %}
+    <div class="notification">
+        {{ message }}
+    </div>
+    {% endif %}
+
+    <h1>All Appointments</h1>
+    <table>
+        <thead>
+            <tr>
+                <th>ID</th>
+                <th>Patient Name</th>
+                <th>Appointment Date</th>
+                <th>Reason</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for appointment in appointments %}
+            <tr>
+                <td>{{ appointment.id }}</td>
+                <td>{{ appointment.patient_name }}</td>
+                <td>{{ appointment.appointment_date }}</td>
+                <td>{{ appointment.reason }}</td>
+            </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+</body>
+</html>

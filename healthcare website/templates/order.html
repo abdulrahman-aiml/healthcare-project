@@ -1,0 +1,216 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Order Medicine</title>
+    <link rel="stylesheet" href="../static/styles.css">
+</head>
+<body>
+    <div class="navbar">
+        <div class="navbar-title">
+            <h2>Online Pharmacy</h2>
+        </div>
+        <div class="nav-links">
+            <a href="/wishlist"><button>Wishlist</button></a>
+            <a href="/medstore"><button>Back to Store</button></a>
+        </div>
+    </div>
+    
+    <div class="container">
+        <div class="heading">Order Details</div>
+
+        <!-- Medicine Information -->
+        <div class="order-details">
+            <h3 id="medicineName">Medicine Name</h3>
+            <p id="medicineDescription">Description of the medicine.</p>
+            <div class="price" id="medicinePrice">$0.00</div>
+        </div>
+
+        <!-- Customer Information -->
+        <div class="order-details">
+            <h3>Customer Information</h3>
+
+            <!-- Name Field -->
+            <div class="form-field">
+                <label for="userName">Full Name</label>
+                <input type="text" id="userName" name="customerName" placeholder="Enter your full name" required>
+            </div>
+
+            <!-- Shipping Address Field -->
+            <div class="form-field">
+                <label for="userAddress">Shipping Address</label>
+                <input type="text" id="userAddress" name="shippingAddress" placeholder="Enter your shipping address" required>
+            </div>
+
+            <!-- Payment Method Selection -->
+            <div class="payment-methods">
+                <label>
+                    <input type="radio" id="upi" name="paymentMethod" value="upi" onclick="togglePaymentFields()"> UPI Payment
+                </label>
+                <label>
+                    <input type="radio" id="cardPayment" name="paymentMethod" value="card" onclick="togglePaymentFields()"> Card Payment
+                </label>
+                <label>
+                    <input type="radio" id="cod" name="paymentMethod" value="cod" onclick="togglePaymentFields()"> Cash on Delivery
+                </label>
+            </div>
+
+            <!-- UPI Fields (Hidden initially) -->
+            <div class="upi-fields" style="display: none;">
+                <div class="form-field">
+                    <label for="upiMethod">Choose UPI Method</label>
+                    <select id="upiMethod" name="upiMethod">
+                        <option value="gpay">Google Pay</option>
+                        <option value="phonepe">PhonePe</option>
+                        <option value="razorpay">Razorpay</option>
+                    </select>
+                </div>
+                <div class="form-field">
+                    <label for="upiId">UPI ID</label>
+                    <input type="text" id="upiId" name="upiId" placeholder="Enter your UPI ID" required>
+                </div>
+            </div>
+
+            <!-- Card Payment Fields (Hidden initially) -->
+            <div class="card-fields" style="display: none;">
+                <div class="form-field">
+                    <label for="cardType">Choose Card Type</label>
+                    <select id="cardType" name="cardType" onchange="handleCardTypeSelection()">
+                        <option value="debit">Debit</option>
+                        <option value="credit">Credit</option>
+                        <option value="rupay">Rupay</option>
+                    </select>
+                </div>
+                <div id="cardTypeField" style="margin-bottom: 10px; color: #555;"></div>
+                <div class="form-field">
+                    <label for="cardNumber">Card Number</label>
+                    <input type="text" id="cardNumber" name="cardNumber" placeholder="Enter your card number" required>
+                </div>
+                <div class="form-field">
+                    <label for="expiryDate">Expiry Date</label>
+                    <input type="text" id="expiryDate" name="expiryDate" placeholder="MM/YY" required>
+                </div>
+                <div class="form-field">
+                    <label for="cvv">CVV</label>
+                    <input type="text" id="cvv" name="cvv" placeholder="Enter CVV" required>
+                </div>
+            </div>
+
+            <!-- Submit Button -->
+            <div>
+                <button id="placeOrderButton" disabled style="background-color: red; color: white;">Place Order</button>
+            </div>
+        </div>
+
+        <!-- Popup Message -->
+        <div id="orderMessage" class="order-message" style="display: none;">
+            <p>Your order has been placed! It will be delivered in <span id="deliveryTime"></span> days.</p>
+            <button onclick="closeOrderMessage()">Close</button>
+        </div>
+    </div>
+
+    <script>
+        // Function to safely fetch and decode URL parameters
+        function getURLParam(key) {
+            const urlParams = new URLSearchParams(window.location.search);
+            const value = urlParams.get(key);
+            return value ? decodeURIComponent(value.trim()) : "N/A";
+        }
+
+        // Fetch and populate the order details with the medicine information
+        const medicine = getURLParam('medicine');
+        const description = getURLParam('description');
+        const price = getURLParam('price');
+
+        // Populate the page elements with fetched values
+        document.getElementById('medicineName').textContent = medicine || "Unknown Medicine";
+        document.getElementById('medicineDescription').textContent = description || "No description provided.";
+        document.getElementById('medicinePrice').textContent = price ? `$${parseFloat(price).toFixed(2)}` : "$0.00";
+
+        // Alert user if critical details are missing
+        if (!medicine || !price) {
+            alert("Warning: Missing or incomplete order details.");
+        }
+
+        // Function to toggle payment fields based on selection
+        function togglePaymentFields() {
+            const upiFields = document.querySelector('.upi-fields');
+            const cardFields = document.querySelector('.card-fields');
+            const selectedPaymentMethod = document.querySelector('input[name="paymentMethod"]:checked').value;
+
+            // Toggle visibility of fields based on payment method
+            upiFields.style.display = selectedPaymentMethod === 'upi' ? 'block' : 'none';
+            cardFields.style.display = selectedPaymentMethod === 'card' ? 'block' : 'none';
+
+            // Hide all fields for Cash on Delivery
+            if (selectedPaymentMethod === 'cod') {
+                upiFields.style.display = 'none';
+                cardFields.style.display = 'none';
+            }
+        }
+
+        // Function to handle card type selection
+        function handleCardTypeSelection() {
+            const cardTypeField = document.getElementById('cardTypeField');
+            const selectedCardType = document.getElementById('cardType').value;
+
+            // Display selected card type
+            cardTypeField.textContent = selectedCardType
+                ? `Selected Card Type: ${selectedCardType.charAt(0).toUpperCase() + selectedCardType.slice(1)}`
+                : '';
+        }
+
+        // Function to enable or disable the "Place Order" button based on form inputs
+        function checkFormFields() {
+            const userName = document.getElementById('userName').value.trim();
+            const userAddress = document.getElementById('userAddress').value.trim();
+            const placeOrderButton = document.getElementById('placeOrderButton');
+
+            // Enable button if all fields are filled, else disable it
+            if (userName && userAddress) {
+                placeOrderButton.disabled = false;
+                placeOrderButton.style.backgroundColor = '#28a745'; // Green color
+            } else {
+                placeOrderButton.disabled = true;
+                placeOrderButton.style.backgroundColor = '#dc3545'; // Red color
+            }
+        }
+
+        // Function to place order
+        function placeOrder() {
+            // Generate a random delivery time between 4 and 14 days
+            const deliveryDays = Math.floor(Math.random() * 11) + 4;
+
+            // Display confirmation popup with delivery time
+            // alert(`Your order has been placed successfully! Your order will be delivered within ${deliveryDays} days.`);
+
+            // Optionally display confirmation in the page UI as well
+            const deliveryTimeElement = document.getElementById('deliveryTime');
+            deliveryTimeElement.textContent = `${deliveryDays}`;
+
+            const orderMessage = document.getElementById('orderMessage');
+            orderMessage.style.display = 'block'; // Show the popup message
+        }
+
+        // Function to close the order message
+// Function to close the order message and refresh the page
+function closeOrderMessage() {
+    const orderMessage = document.getElementById('orderMessage');
+    orderMessage.style.display = 'none'; // Hide the popup message
+    location.reload(); // Refresh the page
+}
+
+
+        // Add event listeners to input fields to validate form dynamically
+        document.getElementById('userName').addEventListener('input', checkFormFields);
+        document.getElementById('userAddress').addEventListener('input', checkFormFields);
+
+        // Add click event listener to the "Place Order" button
+        document.getElementById('placeOrderButton').addEventListener('click', placeOrder);
+
+        // Initial validation check when page loads
+        document.addEventListener('DOMContentLoaded', checkFormFields);
+    </script>
+</body>
+</html>

@@ -1,0 +1,212 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Your Wishlist</title>
+    <style>
+        body {
+            font-family: 'Arial', sans-serif;
+            background-color: #f4f7fc;
+            margin: 0;
+            padding: 0;
+        }
+
+        .navbar {
+            background-color: #007bff;
+            padding: 10px 20px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            color: white;
+        }
+
+        .navbar .nav-links {
+            display: flex;
+            gap: 15px;
+        }
+
+        .navbar .nav-links button {
+            padding: 8px 20px;
+            background-color: #ff5722;
+            color: white;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+        }
+
+        .navbar .nav-links button:hover {
+            background-color: #e64a19;
+        }
+
+        .container {
+            width: 90%;
+            margin: 20px auto;
+            padding: 20px;
+        }
+
+        .heading {
+            text-align: center;
+            font-size: 2.5em;
+            margin-bottom: 30px;
+            color: #333;
+        }
+
+        .wishlist-items {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
+            gap: 20px;
+            padding: 0;
+            list-style: none;
+        }
+
+        .wishlist-item {
+            background-color: #fff;
+            padding: 20px;
+            border-radius: 10px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+            text-align: center;
+            transition: box-shadow 0.3s ease;
+        }
+
+        .wishlist-item:hover {
+            box-shadow: 0 8px 16px rgba(0, 0, 0, 0.2);
+        }
+
+        .wishlist-item img {
+            width: 100%;
+            height: auto;
+            border-radius: 8px;
+            margin-bottom: 15px;
+        }
+
+        .wishlist-item h3 {
+            font-size: 1.3em;
+            margin: 15px 0;
+            color: #333;
+        }
+
+        .wishlist-item p {
+            font-size: 1em;
+            color: #666;
+            margin-bottom: 15px;
+        }
+
+        .wishlist-item .price {
+            font-size: 1.2em;
+            font-weight: bold;
+            color: #007bff;
+            margin-bottom: 15px;
+        }
+
+        .wishlist-item button {
+            padding: 8px 16px;
+            background-color: #ff5722;
+            color: white;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            font-size: 1em;
+        }
+
+        .wishlist-item button:hover {
+            background-color: #e64a19;
+        }
+
+        .no-wishlist-message {
+            text-align: center;
+            font-size: 1.2em;
+            color: #777;
+            margin-top: 30px;
+        }
+
+        @media (max-width: 768px) {
+            .container {
+                width: 90%;
+            }
+
+            .wishlist-items {
+                grid-template-columns: repeat(auto-fill, minmax(220px, 1fr));
+            }
+        }
+        .order-btn {
+    display: inline-block;
+    padding: 10px;
+    background-color: #28a745;
+    color: white;
+    border: none;
+    text-align: center;
+    text-decoration: none;
+    margin-top: 10px;
+    border-radius: 5px;
+}
+
+.order-btn:hover {
+    background-color: #218838;
+}
+
+    </style>
+</head>
+<body>
+
+    <!-- Navigation Bar -->
+    <div class="navbar">
+        <div class="navbar-title">
+            <h2>Online Pharmacy</h2>
+        </div>
+        <div class="nav-links">
+            <a href="/medstore"><button>Back to Store</button></a>
+            <a href="/"><button>Home</button></a>
+        </div>
+    </div>
+
+    <div class="container">
+        <div class="heading">Your Wishlist</div>
+
+        <ul class="wishlist-items" id="wishlistContainer">
+            <!-- Wishlist items will be listed here -->
+        </ul>
+
+        <div id="wishlistMessage" class="no-wishlist-message">Your wishlist is empty.</div>
+    </div>
+
+    <script>
+        // Fetch the wishlist from localStorage
+        let wishlist = JSON.parse(localStorage.getItem('wishlist')) || [];
+
+        const wishlistContainer = document.getElementById('wishlistContainer');
+        const wishlistMessage = document.getElementById('wishlistMessage');
+
+        if (wishlist.length > 0) {
+            wishlistMessage.style.display = 'none';  // Hide "empty" message
+            wishlist.forEach(item => {
+                const listItem = document.createElement('li');
+                listItem.classList.add('wishlist-item');
+                listItem.innerHTML = `
+                    <img src="./static/medicine.jpg" alt="${item}">
+                    <h3>${item}</h3>
+                    <p>Description of ${item} goes here.</p>
+                    <div class="price">$9.99</div>
+                    <button onclick="removeFromWishlist('${item}')">Remove</button>
+                    <!-- Order Now button linking to order.html with the medicine name as a query parameter -->
+                    <a href="/order?medicine=${encodeURIComponent(item)}&description=Description%20of%20${encodeURIComponent(item)}&price=9.99" class="order-btn">Order Now</a>
+                `;
+                wishlistContainer.appendChild(listItem);
+            });
+        } else {
+            wishlistMessage.style.display = 'block';  // Show empty message
+        }
+
+        // Function to remove an item from the wishlist
+        function removeFromWishlist(item) {
+            const index = wishlist.indexOf(item);
+            if (index > -1) {
+                wishlist.splice(index, 1);
+                localStorage.setItem('wishlist', JSON.stringify(wishlist));
+                location.reload();  // Reload to update wishlist
+            }
+        }
+    </script>
+
+</body>
+</html>

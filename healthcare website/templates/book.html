@@ -1,0 +1,26 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Book Appointment</title>
+</head>
+<body>
+    <nav>
+        <a class="btn btn-primary" href="/">Home</a>
+    </nav>
+    <h1>Book Appointment</h1>
+    <form method="POST">
+        <label for="patient_name">Patient Name:</label><br>
+        <input type="text" id="patient_name" name="patient_name" required><br><br>
+        
+        <label for="appointment_date">Appointment Date and Time:</label><br>
+        <input type="datetime-local" id="appointment_date" name="appointment_date" required><br><br>
+        
+        <label for="reason">Reason for Appointment:</label><br>
+        <textarea id="reason" name="reason" required></textarea><br><br>
+        
+        <button type="submit">Submit</button>
+    </form>
+</body>
+</html>
