@@ -3,24 +3,160 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css" integrity="sha512-Fo3rlrZj/k7ujTnHg4C+X8xXl6r2ddoR+7ZT9x1XZydEEo7AhhO5KJf1NZbd3sF6BbcvQbs3Xr9ThOvrFfX3hQ==" crossorigin="anonymous" referrerpolicy="no-referrer" />
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap/5.3.0/css/bootstrap.min.css">
+    <style>
+        /* Global Styles */
+        body {
+            font-family: 'Roboto', sans-serif;
+            background: url('../static/img/background.avif') no-repeat center center fixed;
+            background-size: cover;
+            color: #333;
+            margin: 0;
+            padding: 0;
+            overflow: hidden;
+            height: 100vh;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+        }
+
+        /* Adding blur effect to background */
+        body::before {
+            content: "";
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0, 0, 0, 0.6);
+            backdrop-filter: blur(10px);
+            z-index: 0;
+        }
+
+        /* Form Styling */
+        form {
+            position: relative;
+            background: rgba(255, 255, 255, 0.95);
+            padding: 40px;
+            max-width: 500px;
+            width: 100%;
+            border-radius: 15px;
+            box-shadow: 0 8px 16px rgba(0, 0, 0, 0.2);
+            z-index: 1;
+        }
+
+        form h1 {
+            font-size: 2rem;
+            font-weight: bold;
+            text-align: center;
+            margin-bottom: 20px;
+            color: #444;
+        }
+
+        form label {
+            font-weight: 500;
+            font-size: 1rem;
+            color: #555;
+            margin-bottom: 8px;
+            display: block;
+        }
+
+        form input,
+        form textarea,
+        form button {
+            width: 100%;
+            padding: 14px;
+            margin-bottom: 20px;
+            border-radius: 8px;
+            border: 1px solid #ccc;
+            font-size: 1rem;
+            transition: all 0.3s ease;
+        }
+
+        form input:focus,
+        form textarea:focus {
+            border-color: #2575fc;
+            box-shadow: 0 0 8px rgba(37, 117, 252, 0.5);
+            outline: none;
+        }
+
+        form button {
+            background: linear-gradient(135deg, #6a11cb, #2575fc);
+            color: white;
+            font-size: 1.2rem;
+            font-weight: bold;
+            cursor: pointer;
+            border: none;
+            transition: background 0.3s ease, transform 0.2s ease;
+        }
+
+        form button:hover {
+            background: linear-gradient(135deg, #ff416c, #ff4b2b);
+            transform: scale(1.03);
+        }
+
+        /* Navigation bar */
+        nav {
+            position: absolute;
+            top: 20px;
+            right: 20px;
+            z-index: 2;
+        }
+
+        nav a {
+            background: linear-gradient(135deg, #ff416c, #ff4b2b);
+            color: #333;
+            padding: 10px 20px;
+            font-size: 1rem;
+            border-radius: 30px;
+            text-decoration: none;
+            transition: all 0.3s ease;
+            font-weight: 600;
+        }
+
+        nav a:hover {
+            background-color: #fff;
+            color: #2575fc;
+        }
+
+        /* Responsive Styling */
+        @media (max-width: 768px) {
+            form {
+                padding: 20px;
+            }
+
+            form h1 {
+                font-size: 1.5rem;
+            }
+
+            nav a {
+                font-size: 0.9rem;
+                padding: 8px 15px;
+            }
+        }
+    </style>
     <title>Book Appointment</title>
 </head>
 <body>
     <nav>
-        <a class="btn btn-primary" href="/">Home</a>
+        <a href="/"><i class="fas fa-home"></i> Home</a>
+        <a href="/reschedule"><i class="fas fa-home"></i> Reschedule</a>
+        <a href="/appointments"><i class="fas fa-home"></i> Appointments</a>
+        <a href="/logout"><i class="fas fa-home"></i> Logout</a>
     </nav>
-    <h1>Book Appointment</h1>
     <form method="POST">
-        <label for="patient_name">Patient Name:</label><br>
-        <input type="text" id="patient_name" name="patient_name" required><br><br>
-        
-        <label for="appointment_date">Appointment Date and Time:</label><br>
-        <input type="datetime-local" id="appointment_date" name="appointment_date" required><br><br>
-        
-        <label for="reason">Reason for Appointment:</label><br>
-        <textarea id="reason" name="reason" required></textarea><br><br>
-        
-        <button type="submit">Submit</button>
+        <h1>Book Appointment</h1>
+        <label for="patient_name">Patient Name:</label>
+        <input type="text" id="patient_name" name="patient_name" placeholder="Enter your name" required>
+
+        <label for="appointment_date">Appointment Date and Time:</label>
+        <input type="datetime-local" id="appointment_date" name="appointment_date" required>
+
+        <label for="reason">Reason for Appointment:</label>
+        <textarea id="reason" name="reason" rows="4" placeholder="Enter the reason for your appointment" required></textarea>
+
+        <button type="submit"><i class="fas fa-calendar-check"></i> Submit</button>
     </form>
 </body>
 </html>

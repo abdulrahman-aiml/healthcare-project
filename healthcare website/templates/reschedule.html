@@ -4,20 +4,139 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Reschedule Appointment</title>
+    <style>
+        body {
+            font-family: 'Arial', sans-serif;
+            background-color: #f9f9f9;
+            margin: 0;
+            padding: 0;
+            color: #333;
+        }
+        nav {
+            background-color: #e41313;
+            padding: 10px 20px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            color: white;
+        }
+        nav a {
+            color: white;
+            text-decoration: none;
+            padding: 10px 20px;
+            border-radius: 5px;
+            font-size: 16px;
+            transition: background-color 0.3s;
+        }
+        nav a:hover {
+            background-color: #0056b3;
+        }
+        h1 {
+            text-align: center;
+            font-size: 28px;
+            margin-top: 40px;
+            color: #333;
+        }
+        .container {
+            max-width: 600px;
+            margin: 20px auto;
+            background-color: white;
+            padding: 30px;
+            border-radius: 8px;
+            box-shadow: 0 4px 8px rgba(14, 212, 47, 0.1);
+        }
+        .form-group {
+            margin-bottom: 20px;
+        }
+        label {
+            font-size: 16px;
+            margin-bottom: 5px;
+            display: block;
+        }
+        input[type="number"],
+        input[type="datetime-local"] {
+            width: 100%;
+            padding: 10px;
+            font-size: 16px;
+            border: 1px solid #ccc;
+            border-radius: 5px;
+            margin-top: 5px;
+        }
+        button {
+            background-color: #0b0b0b;
+            color: white;
+            font-size: 16px;
+            padding: 12px 20px;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            width: 100%;
+            transition: background-color 0.3s;
+        }
+        button:hover {
+            background-color: #0056b3;
+        }
+        .notification {
+            background-color: #d4edda;
+            color: #155724;
+            padding: 15px;
+            margin: 20px 0;
+            border-radius: 5px;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+        }
+        @media (max-width: 768px) {
+            nav {
+                flex-direction: column;
+                align-items: flex-start;
+            }
+            nav a {
+                margin-bottom: 10px;
+            }
+            h1 {
+                font-size: 24px;
+            }
+        }
+        @media (max-width: 480px) {
+            .container {
+                padding: 20px;
+            }
+            button {
+                font-size: 14px;
+                padding: 10px 15px;
+            }
+        }
+    </style>
 </head>
 <body>
     <nav>
         <a class="btn btn-primary" href="/">Home</a>
+        <a class="btn btn-primary" href="/appointments">Appointments</a>
+        <a class="btn btn-primary" href="/medstore">Medstore</a>
+        <a class="btn btn-primary" href="/logout">Logout</a>
     </nav>
+
     <h1>Reschedule Appointment</h1>
-    <form method="POST">
-        <label for="appointment_id">Appointment ID:</label><br>
-        <input type="number" id="appointment_id" name="appointment_id" required><br><br>
-        
-        <label for="new_date">New Appointment Date and Time:</label><br>
-        <input type="datetime-local" id="new_date" name="new_date" required><br><br>
-        
-        <button type="submit">Submit</button>
-    </form>
+
+    <div class="container">
+        <!-- Notification message if applicable -->
+        {% if message %}
+        <div class="notification">{{ message }}</div>
+        {% endif %}
+
+        <form method="POST">
+            <div class="form-group">
+                <label for="appointment_id">Appointment ID:</label>
+                <input type="number" id="appointment_id" name="appointment_id" required>
+            </div>
+            
+            <div class="form-group">
+                <label for="new_date">New Appointment Date and Time:</label>
+                <input type="datetime-local" id="new_date" name="new_date" required>
+            </div>
+
+            <button type="submit">Reschedule Appointment</button>
+        </form>
+    </div>
+
 </body>
 </html>

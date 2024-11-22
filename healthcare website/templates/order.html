@@ -14,6 +14,7 @@
         <div class="nav-links">
             <a href="/wishlist"><button>Wishlist</button></a>
             <a href="/medstore"><button>Back to Store</button></a>
+            <a href="/logout"><button>Logout</button></a>
         </div>
     </div>
     
@@ -28,80 +29,82 @@
         </div>
 
         <!-- Customer Information -->
-        <div class="order-details">
-            <h3>Customer Information</h3>
+        <form id="orderForm" method="POST" action="/order">
+            <div class="order-details">
+                <h3>Customer Information</h3>
 
-            <!-- Name Field -->
-            <div class="form-field">
-                <label for="userName">Full Name</label>
-                <input type="text" id="userName" name="customerName" placeholder="Enter your full name" required>
-            </div>
+                <!-- Name Field -->
+                <div class="form-field">
+                    <label for="userName">Full Name</label>
+                    <input type="text" id="userName" name="customerName" placeholder="Enter your full name" required>
+                </div>
 
-            <!-- Shipping Address Field -->
-            <div class="form-field">
-                <label for="userAddress">Shipping Address</label>
-                <input type="text" id="userAddress" name="shippingAddress" placeholder="Enter your shipping address" required>
-            </div>
+                <!-- Shipping Address Field -->
+                <div class="form-field">
+                    <label for="userAddress">Shipping Address</label>
+                    <input type="text" id="userAddress" name="shippingAddress" placeholder="Enter your shipping address" required>
+                </div>
 
-            <!-- Payment Method Selection -->
-            <div class="payment-methods">
-                <label>
-                    <input type="radio" id="upi" name="paymentMethod" value="upi" onclick="togglePaymentFields()"> UPI Payment
-                </label>
-                <label>
-                    <input type="radio" id="cardPayment" name="paymentMethod" value="card" onclick="togglePaymentFields()"> Card Payment
-                </label>
-                <label>
-                    <input type="radio" id="cod" name="paymentMethod" value="cod" onclick="togglePaymentFields()"> Cash on Delivery
-                </label>
-            </div>
+                <!-- Payment Method Selection -->
+                <div class="payment-methods">
+                    <label>
+                        <input type="radio" id="upi" name="paymentMethod" value="upi" onclick="togglePaymentFields()"> UPI Payment
+                    </label>
+                    <label>
+                        <input type="radio" id="cardPayment" name="paymentMethod" value="card" onclick="togglePaymentFields()"> Card Payment
+                    </label>
+                    <label>
+                        <input type="radio" id="cod" name="paymentMethod" value="cod" onclick="togglePaymentFields()"> Cash on Delivery
+                    </label>
+                </div>
 
-            <!-- UPI Fields (Hidden initially) -->
-            <div class="upi-fields" style="display: none;">
-                <div class="form-field">
-                    <label for="upiMethod">Choose UPI Method</label>
-                    <select id="upiMethod" name="upiMethod">
-                        <option value="gpay">Google Pay</option>
-                        <option value="phonepe">PhonePe</option>
-                        <option value="razorpay">Razorpay</option>
-                    </select>
+                <!-- UPI Fields (Hidden initially) -->
+                <div class="upi-fields" style="display: none;">
+                    <div class="form-field">
+                        <label for="upiMethod">Choose UPI Method</label>
+                        <select id="upiMethod" name="upiMethod">
+                            <option value="gpay">Google Pay</option>
+                            <option value="phonepe">PhonePe</option>
+                            <option value="razorpay">Razorpay</option>
+                        </select>
+                    </div>
+                    <div class="form-field">
+                        <label for="upiId">UPI ID</label>
+                        <input type="text" id="upiId" name="upiId" placeholder="Enter your UPI ID" required>
+                    </div>
                 </div>
-                <div class="form-field">
-                    <label for="upiId">UPI ID</label>
-                    <input type="text" id="upiId" name="upiId" placeholder="Enter your UPI ID" required>
-                </div>
-            </div>
 
-            <!-- Card Payment Fields (Hidden initially) -->
-            <div class="card-fields" style="display: none;">
-                <div class="form-field">
-                    <label for="cardType">Choose Card Type</label>
-                    <select id="cardType" name="cardType" onchange="handleCardTypeSelection()">
-                        <option value="debit">Debit</option>
-                        <option value="credit">Credit</option>
-                        <option value="rupay">Rupay</option>
-                    </select>
+                <!-- Card Payment Fields (Hidden initially) -->
+                <div class="card-fields" style="display: none;">
+                    <div class="form-field">
+                        <label for="cardType">Choose Card Type</label>
+                        <select id="cardType" name="cardType" onchange="handleCardTypeSelection()">
+                            <option value="debit">Debit</option>
+                            <option value="credit">Credit</option>
+                            <option value="rupay">Rupay</option>
+                        </select>
+                    </div>
+                    <div id="cardTypeField" style="margin-bottom: 10px; color: #555;"></div>
+                    <div class="form-field">
+                        <label for="cardNumber">Card Number</label>
+                        <input type="text" id="cardNumber" name="cardNumber" placeholder="Enter your card number" required>
+                    </div>
+                    <div class="form-field">
+                        <label for="expiryDate">Expiry Date</label>
+                        <input type="text" id="expiryDate" name="expiryDate" placeholder="MM/YY" required>
+                    </div>
+                    <div class="form-field">
+                        <label for="cvv">CVV</label>
+                        <input type="text" id="cvv" name="cvv" placeholder="Enter CVV" required>
+                    </div>
                 </div>
-                <div id="cardTypeField" style="margin-bottom: 10px; color: #555;"></div>
-                <div class="form-field">
-                    <label for="cardNumber">Card Number</label>
-                    <input type="text" id="cardNumber" name="cardNumber" placeholder="Enter your card number" required>
-                </div>
-                <div class="form-field">
-                    <label for="expiryDate">Expiry Date</label>
-                    <input type="text" id="expiryDate" name="expiryDate" placeholder="MM/YY" required>
-                </div>
-                <div class="form-field">
-                    <label for="cvv">CVV</label>
-                    <input type="text" id="cvv" name="cvv" placeholder="Enter CVV" required>
-                </div>
-            </div>
 
-            <!-- Submit Button -->
-            <div>
-                <button id="placeOrderButton" disabled style="background-color: red; color: white;">Place Order</button>
+                <!-- Submit Button -->
+                <div>
+                    <button id="placeOrderButton" type="submit" disabled style="background-color: red; color: white;">Place Order</button>
+                </div>
             </div>
-        </div>
+        </form>
 
         <!-- Popup Message -->
         <div id="orderMessage" class="order-message" style="display: none;">
@@ -139,14 +142,26 @@
             const cardFields = document.querySelector('.card-fields');
             const selectedPaymentMethod = document.querySelector('input[name="paymentMethod"]:checked').value;
 
-            // Toggle visibility of fields based on payment method
+            // Show fields based on payment method
             upiFields.style.display = selectedPaymentMethod === 'upi' ? 'block' : 'none';
             cardFields.style.display = selectedPaymentMethod === 'card' ? 'block' : 'none';
 
-            // Hide all fields for Cash on Delivery
-            if (selectedPaymentMethod === 'cod') {
-                upiFields.style.display = 'none';
-                cardFields.style.display = 'none';
+            // Adjust required attributes
+            if (selectedPaymentMethod === 'upi') {
+                document.getElementById('upiId').setAttribute('required', 'true');
+                document.getElementById('cardNumber').removeAttribute('required');
+                document.getElementById('expiryDate').removeAttribute('required');
+                document.getElementById('cvv').removeAttribute('required');
+            } else if (selectedPaymentMethod === 'card') {
+                document.getElementById('upiId').removeAttribute('required');
+                document.getElementById('cardNumber').setAttribute('required', 'true');
+                document.getElementById('expiryDate').setAttribute('required', 'true');
+                document.getElementById('cvv').setAttribute('required', 'true');
+            } else {
+                document.getElementById('upiId').removeAttribute('required');
+                document.getElementById('cardNumber').removeAttribute('required');
+                document.getElementById('expiryDate').removeAttribute('required');
+                document.getElementById('cvv').removeAttribute('required');
             }
         }
 
@@ -178,29 +193,61 @@
         }
 
         // Function to place order
-        function placeOrder() {
-            // Generate a random delivery time between 4 and 14 days
-            const deliveryDays = Math.floor(Math.random() * 11) + 4;
+     // Updated function to submit the order form
+function placeOrder() {
+    // Get all the form data
+    const medicineName = document.getElementById('medicineName').textContent;
+    const medicineDescription = document.getElementById('medicineDescription').textContent;
+    const medicinePrice = document.getElementById('medicinePrice').textContent.replace('$', '');
 
-            // Display confirmation popup with delivery time
-            // alert(`Your order has been placed successfully! Your order will be delivered within ${deliveryDays} days.`);
+    // Fetch customer input values
+    const customerName = document.getElementById('userName').value;
+    const shippingAddress = document.getElementById('userAddress').value;
+    const paymentMethod = document.querySelector('input[name="paymentMethod"]:checked').value;
 
-            // Optionally display confirmation in the page UI as well
-            const deliveryTimeElement = document.getElementById('deliveryTime');
-            deliveryTimeElement.textContent = `${deliveryDays}`;
+    // Prepare form data to be sent
+    const formData = new FormData(document.getElementById('orderForm'));
 
-            const orderMessage = document.getElementById('orderMessage');
-            orderMessage.style.display = 'block'; // Show the popup message
-        }
+    // Add medicine details to form data
+    formData.append('medicineName', medicineName);
+    formData.append('medicineDescription', medicineDescription);
+    formData.append('medicinePrice', medicinePrice);
 
-        // Function to close the order message
-// Function to close the order message and refresh the page
-function closeOrderMessage() {
-    const orderMessage = document.getElementById('orderMessage');
-    orderMessage.style.display = 'none'; // Hide the popup message
-    location.reload(); // Refresh the page
+    // Send form data via POST
+    fetch('/order', {
+        method: 'POST',
+        body: formData
+    }).then(response => response.json())
+      .then(data => {
+          if (data.success) {
+            // alert('The order has been placed successfully!');
+            // console.log('The order has been placed successfully.');
+              const deliveryTimeElement = document.getElementById('deliveryTime');
+              deliveryTimeElement.textContent = data.deliveryTime;
+              document.getElementById('orderMessage').style.display = 'block';
+
+
+
+          } else {
+              alert('Failed to place order');
+          }
+      })
+      .catch(error => {
+          console.error('Error:', error);
+          alert('An error occurred while placing your order.');
+      });
 }
 
+
+        // Function to close the order message
+        function closeOrderMessage() {
+            const orderMessage = document.getElementById('orderMessage');
+            orderMessage.style.display = 'none'; // Hide the popup message
+            // location.reload(); // Refresh the page
+            setTimeout(() => {
+              window.location.href = '/medstore';  // Redirect to the medstore page after the message shows
+          }, 100);
+        }
 
         // Add event listeners to input fields to validate form dynamically
         document.getElementById('userName').addEventListener('input', checkFormFields);

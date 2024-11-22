@@ -10,8 +10,20 @@
         body {
             font-family: 'Arial', sans-serif;
             background-color: #f4f7fc;
+            background-image: url('../static/img/background.avif');
+            background-size: cover;
             margin: 0;
             padding: 0;
+        }
+        body::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            backdrop-filter: blur(20px); /* Blurred background */
+            z-index: -1; /* Ensure the overlay is behind the form */
         }
 
         .navbar {
@@ -147,7 +159,9 @@
         <div class="nav-links">
             <a href="/wishlist"><button>Wishlist</button></a>
             <a href="/order"><button>Order Now</button></a>
-            <a href="/"><button>Home</button></a>
+            <a href="/book"><button>Book</button></a>
+            <a href="/appointments"><button>Appointments</button></a>
+            <a href="/logout"><button>Logout</button></a>
         </div>
     </div>
     <div class="container">

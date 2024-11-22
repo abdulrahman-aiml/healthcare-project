@@ -1,50 +1,178 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>All Appointments</title>
     <style>
         body {
-            font-family: Arial, sans-serif;
+            font-family: 'Arial', sans-serif;
             margin: 20px;
+            background-color: #f8f9fa;
+            color: #333;
         }
+
+        nav {
+            margin-bottom: 20px;
+        }
+
+        .btn {
+            text-decoration: none;
+            display: inline-block;
+            padding: 10px 20px;
+            font-size: 16px;
+            color: white;
+            background-color: #007bff;
+            border-radius: 5px;
+            transition: background-color 0.3s ease;
+        }
+
+        .btn:hover {
+            background-color: #0056b3;
+        }
+
         .notification {
             background-color: #d4edda;
             color: #155724;
             border: 1px solid #c3e6cb;
-            padding: 10px;
+            padding: 15px;
             border-radius: 5px;
             margin-bottom: 20px;
+            box-shadow: 0px 4px 6px rgba(0, 0, 0, 0.1);
         }
+
+        h1 {
+            font-size: 24px;
+            margin-bottom: 20px;
+            color: #333;
+        }
+
         table {
             width: 100%;
             border-collapse: collapse;
+            background-color: white;
+            border-radius: 5px;
+            overflow: hidden;
+            box-shadow: 0px 4px 6px rgba(0, 0, 0, 0.1);
+            margin-bottom: 20px;
         }
-        table, th, td {
+
+        table,
+        th,
+        td {
             border: 1px solid #ddd;
         }
-        th, td {
-            padding: 10px;
+
+        th,
+        td {
+            padding: 12px 15px;
             text-align: left;
         }
+
         th {
             background-color: #f4f4f4;
+            font-weight: bold;
+        }
+
+        tr:hover {
+            background-color: #f1f1f1;
+        }
+
+        .status-visited {
+            color: #155724;
+            font-weight: bold;
+        }
+
+        .status-cancelled {
+            color: #721c24;
+            font-weight: bold;
+        }
+
+        .status-pending {
+            color: #856404;
+            font-weight: bold;
+        }
+
+        @media (max-width: 768px) {
+
+            table,
+            th,
+            td {
+                font-size: 14px;
+            }
+
+            .btn {
+                font-size: 14px;
+                padding: 8px 16px;
+            }
+
+            h1 {
+                font-size: 20px;
+            }
+        }
+
+        @media (max-width: 480px) {
+            table {
+                font-size: 12px;
+            }
+
+            th,
+            td {
+                padding: 10px;
+            }
         }
     </style>
 </head>
+
 <body>
     <nav>
         <a class="btn btn-primary" href="/">Home</a>
+        <a class="btn btn-primary" href="/book">Book</a>
+        <a class="btn btn-primary" href="/reschedule">Reschedule</a>
+        <a class="btn btn-primary" href="/medstore">Medstore</a>
+        <a class="btn btn-primary" href="/logout">Logout</a>
     </nav>
-    <!-- Notification Message -->
+
     {% if message %}
-    <div class="notification">
-        {{ message }}
-    </div>
+    <div class="notification">{{ message }}</div>
     {% endif %}
 
-    <h1>All Appointments</h1>
+    <h1>Pending Appointments</h1>
+    <table>
+        <thead>
+            <tr>
+                <th>ID</th>
+                <th>Patient Name</th>
+                <th>Appointment Date</th>
+                <th>Reason</th>
+                <th>Action</th>
+            </tr>
+        </thead>
+        <tbody data-status="Pending">
+            {% for appointment in appointments if not appointment.status %}
+            <tr data-id="{{ appointment.id }}">
+                <td>{{ appointment.id }}</td>
+                <td>{{ appointment.patient_name }}</td>
+                <td>{{ appointment.appointment_date }}</td>
+                <td>{{ appointment.reason }}</td>
+                <td>
+                    <form method="POST" action="/update_status" class="status-form">
+                        <input type="hidden" name="appointment_id" value="{{ appointment.id }}">
+                        <select name="status" required>
+                            <option value="" disabled selected>Set Status</option>
+                            <option value="Visited">Visited</option>
+                            <option value="Cancelled">Cancelled</option>
+                        </select>
+                        <button type="submit" class="btn">Submit</button>
+                    </form>
+                </td>
+            </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+
+    <h1>Visited Appointments</h1>
     <table>
         <thead>
             <tr>
@@ -54,9 +182,9 @@
                 <th>Reason</th>
             </tr>
         </thead>
-        <tbody>
-            {% for appointment in appointments %}
-            <tr>
+        <tbody data-status="Visited">
+            {% for appointment in appointments if appointment.status == 'Visited' %}
+            <tr data-id="{{ appointment.id }}">
                 <td>{{ appointment.id }}</td>
                 <td>{{ appointment.patient_name }}</td>
                 <td>{{ appointment.appointment_date }}</td>
@@ -65,5 +193,80 @@
             {% endfor %}
         </tbody>
     </table>
+
+    <h1>Cancelled Appointments</h1>
+    <table>
+        <thead>
+            <tr>
+                <th>ID</th>
+                <th>Patient Name</th>
+                <th>Appointment Date</th>
+                <th>Reason</th>
+            </tr>
+        </thead>
+        <tbody data-status="Cancelled">
+            {% for appointment in appointments if appointment.status == 'Cancelled' %}
+            <tr data-id="{{ appointment.id }}">
+                <td>{{ appointment.id }}</td>
+                <td>{{ appointment.patient_name }}</td>
+                <td>{{ appointment.appointment_date }}</td>
+                <td>{{ appointment.reason }}</td>
+            </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', () => {
+            document.querySelectorAll('form.status-form').forEach(form => {
+                form.addEventListener('submit', async (event) => {
+                    event.preventDefault();
+                    const formData = new FormData(form);
+
+                    try {
+                        const response = await fetch('/update_status', {
+                            method: 'POST',
+                            body: formData,
+                        });
+
+                        if (response.ok) {
+                            const data = await response.json();
+
+                            if (data.status === 'no_change') {
+                                alert(data.message); // Message when status remains unchanged
+                                return;
+                            }
+
+                            const appointment = data.appointment;
+                            const row = form.closest('tr');
+                            row.remove();
+
+                            // Move the row to the appropriate table
+                            const tableBody = document.querySelector(`table tbody[data-status="${data.status}"]`);
+                            if (tableBody) {
+                                const newRow = document.createElement('tr');
+                                newRow.innerHTML = `
+                                    <td>${appointment.id}</td>
+                                    <td>${appointment.patient_name}</td>
+                                    <td>${appointment.appointment_date}</td>
+                                    <td>${appointment.reason}</td>
+                                `;
+                                tableBody.appendChild(newRow);
+                            }
+                        } else {
+                            const errorData = await response.json();
+                            alert('Error: ' + (errorData.message || 'Unknown error occurred')); // Show backend error messages
+                        }
+                    } catch (error) {
+                        console.error('Network error:', error);
+                        alert('A network error occurred. Please try again.'); // Show network error message
+                    }
+                });
+            });
+        });
+    </script>
 </body>
+
+
+
 </html>

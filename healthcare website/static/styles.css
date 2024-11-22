@@ -1,277 +1,230 @@
-
-/* General Body Styling */
-body {
-    font-family: 'Arial', sans-serif;
-    background-color: #f4f7fc;
+/* Reset some default browser styling */
+* {
     margin: 0;
     padding: 0;
+    box-sizing: border-box;
+}
+
+/* Body and general layout */
+body {
+    font-family: 'Arial', sans-serif;
+    background-color: #f4f4f4;
     color: #333;
     line-height: 1.6;
 }
 
-/* Navbar Styling */
+/* Navbar */
 .navbar {
     background-color: #007bff;
-    padding: 15px 30px;
+    color: white;
     display: flex;
     justify-content: space-between;
     align-items: center;
-    color: white;
-    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
-}
-
-.navbar .navbar-title h2 {
-    margin: 0;
-    font-size: 1.8em;
-}
-
-.navbar .nav-links {
-    display: flex;
-    gap: 20px;
-}
-
-.navbar .nav-links a button {
-    padding: 8px 18px;
-    background-color: #ff5722;
-    color: white;
-    border: none;
-    border-radius: 5px;
-    cursor: pointer;
-    font-size: 1em;
-    transition: background-color 0.3s ease;
-}
-
-.navbar .nav-links a button:hover {
-    background-color: #e64a19;
-}
-
-/* Container Styling */
-.container {
-    width: 80%;
-    margin: 20px auto;
-    padding: 30px;
-    background-color: #fff;
-    border-radius: 10px;
-    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
-}
-
-/* Heading Styling */
-.heading {
-    text-align: center;
-    font-size: 2.5em;
-    margin-bottom: 30px;
-    color: #333;
-    font-weight: bold;
-}
-
-/* Order Details Section Styling */
-.order-details {
-    background-color: #f9f9f9;
-    padding: 20px;
-    border-radius: 10px;
-    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
-    margin-bottom: 30px;
-}
-
-.order-details h3 {
-    font-size: 1.5em;
-    margin-bottom: 15px;
-    color: #333;
-    font-weight: bold;
-}
-
-.order-details p {
-    font-size: 1.2em;
-    color: #666;
-    margin-bottom: 20px;
-}
-
-.order-details .price {
-    font-size: 1.5em;
-    color: #007bff;
-    font-weight: bold;
-}
-
-/* Form Field Styling */
-.form-field {
-    margin-bottom: 15px;
-}
-
-.form-field label {
-    font-size: 1.1em;
-    color: #333;
-    display: block;
-    margin-bottom: 5px;
-    font-weight: 500;
-}
-
-.form-field input {
+    padding: 15px 30px;
+    position: fixed;
     width: 100%;
-    padding: 12px;
-    font-size: 1em;
-    border: 1px solid #ccc;
-    border-radius: 5px;
-    transition: border-color 0.3s ease;
+    top: 0;
+    z-index: 1000;
 }
 
-.form-field input:focus {
-    border-color: #007bff;
-    outline: none;
+.navbar-title h2 {
+    margin: 0;
 }
 
-/* Button Styling */
-.order-btn {
-    padding: 12px 25px;
+.nav-links {
+    display: flex;
+    gap: 10px;
+}
+
+.nav-links a button {
     background-color: #28a745;
     color: white;
     border: none;
-    font-size: 1.2em;
+    padding: 10px 20px;
+    font-size: 14px;
     border-radius: 5px;
     cursor: pointer;
-    font-weight: bold;
-    transition: background-color 0.3s ease, transform 0.2s ease;
+    transition: background-color 0.3s ease;
 }
 
-.order-btn:hover {
+.nav-links a button:hover {
     background-color: #218838;
-    transform: scale(1.02);
 }
 
-/* Responsive Styling */
-@media (max-width: 768px) {
-    .container {
-        width: 90%;
-        padding: 20px;
-    }
-
-    .navbar {
-        flex-direction: column;
-        align-items: flex-start;
-    }
-
-    .navbar .navbar-title {
-        margin-bottom: 10px;
-    }
-
-    .navbar .nav-links {
-        gap: 10px;
-    }
-
-    .heading {
-        font-size: 2em;
-    }
-
-    .order-details h3 {
-        font-size: 1.3em;
-    }
-
-    .order-btn {
-        font-size: 1em;
-    }
+/* Container */
+.container {
+    margin-top: 80px; /* Prevent navbar from overlapping content */
+    padding: 20px;
+    max-width: 900px;
+    margin-left: auto;
+    margin-right: auto;
+    background-color: white;
+    border-radius: 10px;
+    box-shadow: 0px 10px 20px rgba(0, 0, 0, 0.1);
 }
-    /* UPI Method Dropdown Styling */
+
+/* Heading */
+.heading {
+    text-align: center;
+    font-size: 24px;
+    font-weight: bold;
+    margin-bottom: 20px;
+    color: #333;
+}
+
+/* Order Details Section */
+.order-details {
+    margin-bottom: 30px;
+}
+
+#medicineName {
+    font-size: 22px;
+    font-weight: bold;
+    color: #007bff;
+}
+
+#medicineDescription {
+    font-size: 16px;
+    color: #555;
+    margin-top: 10px;
+}
+
+#medicinePrice {
+    font-size: 20px;
+    color: #28a745;
+    margin-top: 10px;
+}
+
+/* Form Fields */
 .form-field {
-margin-bottom: 20px;
+    margin-bottom: 15px;
 }
 
-.form-field label {
-font-size: 1.1em;
-color: #333;
-display: block;
-margin-bottom: 8px;
-font-weight: 500;
+label {
+    font-size: 16px;
+    font-weight: bold;
+    color: #555;
 }
 
-.form-field select {
-width: 100%;
-padding: 12px;
-font-size: 1em;
-color: #333;
-background-color: #f9f9f9;
-border: 1px solid #ccc;
-border-radius: 5px;
-transition: all 0.3s ease;
-box-shadow: inset 0 1px 3px rgba(0, 0, 0, 0.1);
-appearance: none; /* Removes the default browser arrow */
+input[type="text"], select {
+    width: 100%;
+    padding: 12px;
+    font-size: 16px;
+    border-radius: 5px;
+    border: 1px solid #ddd;
+    margin-top: 5px;
+    background-color: #f9f9f9;
 }
 
-.form-field select:focus {
-outline: none;
-border-color: #007bff;
-box-shadow: 0 0 5px rgba(0, 123, 255, 0.5);
-background-color: #fff;
+input[type="radio"] {
+    margin-right: 10px;
 }
 
-.form-field select option {
-padding: 8px;
+.payment-methods {
+    display: flex;
+    flex-direction: column;
+    margin-bottom: 20px;
 }
 
-/* Add a custom arrow to the dropdown */
-.form-field select {
-background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='%23333'%3E%3Cpath d='M7 10l5 5 5-5z'/%3E%3C/svg%3E");
-background-repeat: no-repeat;
-background-position: right 12px center;
-background-size: 16px;
+/* UPI and Card Fields */
+.upi-fields, .card-fields {
+    display: none;
+    margin-top: 10px;
 }
 
-/* Style for the order confirmation message */
+form .form-field select,
+form .form-field input {
+    width: 100%;
+    padding: 10px;
+}
+
+button {
+    background-color: #007bff;
+    color: white;
+    border: none;
+    padding: 12px 20px;
+    font-size: 18px;
+    font-weight: bold;
+    border-radius: 5px;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+}
+
+button:disabled {
+    background-color: #ccc;
+}
+
+button:hover {
+    background-color: #0056b3;
+}
+
+/* Order Message Popup */
 .order-message {
-position: fixed;
-top: 50%;
-left: 50%;
-transform: translate(-50%, -50%);
-background-color: #fff;
-padding: 20px;
-border-radius: 8px;
-box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2);
-z-index: 999;
-text-align: center;
-max-width: 300px;
-font-family: 'Arial', sans-serif;
-}
-
-.order-message p {
-font-size: 1.2em;
-color: #333;
+    background-color: #d4edda;
+    color: #155724;
+    padding: 20px;
+    margin-top: 20px;
+    border-radius: 5px;
+    display: none;
+    text-align: center;
 }
 
 .order-message button {
-padding: 8px 16px;
-background-color: #28a745;
-color: white;
-border: none;
-border-radius: 5px;
-cursor: pointer;
-font-size: 1em;
+    background-color: #28a745;
+    color: white;
+    border: none;
+    padding: 10px 20px;
+    margin-top: 10px;
+    cursor: pointer;
+    border-radius: 5px;
+    font-size: 16px;
 }
 
 .order-message button:hover {
-background-color: #218838;
+    background-color: #218838;
 }
 
-/* Style for Place Order button */
-.placeOrderButton {
-padding: 10px 20px;
-background-color: #dc3545; /* Red color (disabled state) */
-color: white;
-border: none;
-border-radius: 5px;
-font-size: 16px;
-cursor: not-allowed;  /* Initially, cursor is not allowed */
-transition: background-color 0.3s ease, cursor 0.3s ease;
-width: 100%;
-max-width: 200px;
-text-align: center;
-margin-top: 20px;
+/* Media Queries for Responsiveness */
+@media (max-width: 768px) {
+    .navbar {
+        flex-direction: column;
+        text-align: center;
+    }
+
+    .nav-links {
+        margin-top: 10px;
+    }
+
+    .container {
+        padding: 15px;
+        margin-top: 100px; /* Prevent navbar from overlapping content */
+    }
+
+    .heading {
+        font-size: 20px;
+    }
+
+    input[type="text"], select {
+        padding: 10px;
+    }
+
+    button {
+        padding: 10px;
+        font-size: 16px;
+    }
 }
 
-/* Style when the button is enabled (green) */
-.placeOrderButton:enabled {
-background-color: #a72828; /* Green color (enabled state) */
-cursor: pointer; /* Change cursor to pointer when button is enabled */
-}
+@media (max-width: 480px) {
+    .container {
+        padding: 10px;
+        margin-top: 120px; /* Adjust margin for smaller screens */
+    }
 
-/* Optional: Button hover effect when enabled */
-/* .order-btn:enabled:hover {
-background-color: #218838; Darker green on hover */
-/* } */
+    .heading {
+        font-size: 18px;
+    }
+
+    button {
+        width: 100%;
+    }
+}
